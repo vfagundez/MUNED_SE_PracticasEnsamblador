@@ -1,0 +1,144 @@
+MPASM 03.80 Released                                   P0.ASM   5-7-2022  11:17:48         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;Para realizar la comparación restamos los dos número (A-B). 
+                      00002 ; Si al realizar la resta los dos números son iguales el resultado será cero, activándose el bit Z de
+                            l registro de
+                      00003 ; Estado. 
+                      00004 ; Si al realizar la resta (suma del complemento a 2 de B) se produce un bit de acarreo el resultado es p
+                            ositivo
+                      00005 ; (A> B). Ejemplo: 3-2 = 0011 + 1110 = 1 0001. 
+                      00006 ; Si no se produce acarreo el resultado es negativo (A<B). Ejemplo: 2-3 = 0010 + 1101 = 0 1111. 
+Warning[215]: Processor superseded by command line.  Verify processor symbol.
+                      00007             list    p=16F84A
+                      00008             include <P16F84A.INC>
+                      00001         LIST
+                      00002 ; P16F84A.INC  Standard Header File, Version 2.00    Microchip Technology, Inc.
+Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+Error[126]  : Argument out of range (must be greater than or equal to 255)
+Error[126]  : Argument out of range (__MAXRAM must be used first)
+Error[126]  : Argument out of range (__MAXRAM must be used first)
+Error[126]  : Argument out of range (__MAXRAM must be used first)
+                      00134         LIST
+                      00009 
+000000                00010             org     0x0000              ;Se inicia en el origen 0
+  0000000C            00011 NumA        equ     0x0C                ;Variable del número A
+  0000000D            00012 NumB        equ     0x0D                ;Variable del número B
+  0000000E            00013 Mayor       equ     0x0E                ;Variable que almacenará el mayor de los números
+000000                00014             org     0x00                ;Vector de reset
+000000 EF0B F000      00015             goto    Inicio              ;Salto incondicional al principio del programa
+                      00016             ;org     0x05                ;Vector de interrupción
+000004 500D           00017 A_menor_B   movf     NumB,W              ;No, A es menor que B
+000006 6E0E           00018             movwf   Mayor               ;Suma A más B
+000008 EF13 F000      00019             goto    Stop                ;Salto incondicional al final del programa
+00000C 500C           00020 A_mayor_B   movf    NumA,W              ;No, A es menor que B
+00000E 6E0E           00021             movwf   Mayor               ;Suma A más B
+000010 EF13 F000      00022             goto    Stop                ;Salto incondicional al final del programa
+000014 6A0E           00023 A_igual_B   clrf    Mayor               ;Pone a 0 el resultado
+000016 500D           00024 Inicio      movf    NumB,W              ;NumB -> W (acumulador)
+000018 5C0C           00025             subwf   NumA,W              ;A-W -> W
+00001A B403           00026             btfsc   STATUS,Z            ;Bit de cero del registro de Estado a 1 0
+00001C EF0A F000      00027             goto    A_igual_B           ;Si
+000020 B003           00028             btfsc   STATUS,C            ;Bit de acarreo del registro de Estado a 1
+000022 EF02 F000      00029             goto    A_menor_B           ;Si
+000026 0000           00030 Stop        nop                         ;Poner breakpoint de parada
+                      00031             end                         ;Fin del programa fuente
+MPASM 03.80 Released                                   P0.ASM   5-7-2022  11:17:48         PAGE  2
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+A_igual_B                         00000014
+A_mayor_B                         0000000C
+A_menor_B                         00000004
+C                                 00000000
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Inicio                            00000016
+Mayor                             0000000E
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+NumA                              0000000C
+NumB                              0000000D
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+Stop                              00000026
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TRISA                             00000085
+TRISB                             00000086
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+MPASM 03.80 Released                                   P0.ASM   5-7-2022  11:17:48         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WRERR                             00000003
+Z                                 00000002
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_HS_OSC                           00003FFE
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__18F452                          00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXX-------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Bytes Used:    40
+Program Memory Bytes Free: 32728
+
+
+Errors   :     4
+Warnings :     1 reported,     0 suppressed
+Messages :     1 reported,     0 suppressed
+
+Error[173]  : source file path exceeds 62 characters (D:\MIS_DATOS\A1_EDUCACION\B1_UNIVERSIDAD\C3_UNED\D2_CUATRIMESTRE_2\E5_SE_SISTE
+                            MASEMPOTRADOS\PEC4\VICTORFAGUNDEZPOYO\PRACTICASENSAMBLADOR\P0.ASM)
