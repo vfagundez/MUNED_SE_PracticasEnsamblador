@@ -13,7 +13,14 @@ NumB        equ     0x0D                ;Variable del número B
 Mayor       equ     0x0E                ;Variable que almacenará el mayor de los números
             org     0x00                ;Vector de reset
             goto    Inicio              ;Salto incondicional al principio del programa
-            ;org     0x05                ;Vector de interrupción
+            org     0x05                ;Vector de interrupción
+Inicio      movf    NumB,W              ;NumB -> W (acumulador)
+            subwf   NumA,W              ;A-W -> W
+            btfsc   STATUS,Z            ;Bit de cero del registro de Estado a 1 0
+            goto    A_igual_B           ;Si
+            btfsc   STATUS,C            ;Bit de acarreo del registro de Estado a 1
+            goto    A_mayor_B           ;Si
+            goto    A_menor_B           ;No
 A_menor_B   movf     NumB,W              ;No, A es menor que B
             movwf   Mayor               ;Suma A más B
             goto    Stop                ;Salto incondicional al final del programa
@@ -21,11 +28,5 @@ A_mayor_B   movf    NumA,W              ;No, A es menor que B
             movwf   Mayor               ;Suma A más B
             goto    Stop                ;Salto incondicional al final del programa
 A_igual_B   clrf    Mayor               ;Pone a 0 el resultado
-Inicio      movf    NumB,W              ;NumB -> W (acumulador)
-            subwf   NumA,W              ;A-W -> W
-            btfsc   STATUS,Z            ;Bit de cero del registro de Estado a 1 0
-            goto    A_igual_B           ;Si
-            btfsc   STATUS,C            ;Bit de acarreo del registro de Estado a 1
-            goto    A_menor_B           ;Si
 Stop        nop                         ;Poner breakpoint de parada
             end                         ;Fin del programa fuente
