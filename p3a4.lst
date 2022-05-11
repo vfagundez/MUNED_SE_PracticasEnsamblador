@@ -1,0 +1,135 @@
+MPASM 03.80 Released                                 P3A4.ASM   5-10-2022  17:57:08         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;Subrutina que realiza la comparación de dos numeros
+                      00002             list    p=16F84A
+                      00003             include <P16F84A.INC>
+                      00001         LIST
+                      00002 ; P16F84A.INC  Standard Header File, Version 2.00    Microchip Technology, Inc.
+                      00134         LIST
+                      00004 
+0000                  00005             org     0x0000              ;Se inicia en el origen 0
+  0000000C            00006 NumA        equ     0x0C                ;Variable del número A
+  0000000D            00007 NumB        equ     0x0D                ;Variable del número B
+  0000000E            00008 Mayor       equ     0x0E                ;Variable que almacenará el mayor de los números
+0000                  00009             org     0x00                ;Vector de reset
+Error[113]  : Symbol not previously defined (Inicio)
+0000   2800           00010             goto    Inicio              ;Salto incondicional al principio del programa
+0005                  00011             org     0x05                ;Vector de interrupción
+0005   080D           00012 A_menor_B   movf     NumB,W              ;No, A es menor que B
+0006   008E           00013             movwf   Mayor               ;Suma A más B
+0007   2814           00014             goto    Stop                ;Salto incondicional al final del programa
+0008   080C           00015 A_mayor_B   movf    NumA,W              ;No, A es menor que B
+0009   008E           00016             movwf   Mayor               ;Suma A más B
+000A   2814           00017             goto    Stop                ;Salto incondicional al final del programa
+000B   018E           00018 A_igual_B   clrf    Mayor               ;Pone a 0 el resultado
+                      00019 
+000C   080D           00020 Mayoromenor movf    NumB,W              ;NumB -> W (acumulador)
+000D   020C           00021             subwf   NumA,W              ;A-W -> W
+000E   1903           00022             btfsc   STATUS,Z            ;Bit de cero del registro de Estado a 1 0
+000F   280B           00023             goto    A_igual_B           ;Si
+0010   1803           00024             btfsc   STATUS,C            ;Bit de acarreo del registro de Estado a 1
+0011   2808           00025             goto    A_mayor_B           ;Si
+0012   2805           00026             goto    A_menor_B           ;No
+0013   0008           00027             return                      ;Fin y retorno de la subrutina
+0014   0000           00028 Stop        nop                         ;Poner breakpoint de parada
+                      00029             end                         ;Fin del programa fuente
+MPASM 03.80 Released                                 P3A4.ASM   5-10-2022  17:57:08         PAGE  2
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+A_igual_B                         0000000B
+A_mayor_B                         00000008
+A_menor_B                         00000005
+C                                 00000000
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Mayor                             0000000E
+Mayoromenor                       0000000C
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+NumA                              0000000C
+NumB                              0000000D
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+Stop                              00000014
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TRISA                             00000085
+TRISB                             00000086
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+MPASM 03.80 Released                                 P3A4.ASM   5-10-2022  17:57:08         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WRERR                             00000003
+Z                                 00000002
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_HS_OSC                           00003FFE
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : X----XXXXXXXXXXX XXXXX----------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:    17
+Program Memory Words Free:  1007
+
+
+Errors   :     1
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+Error[173]  : source file path exceeds 62 characters (D:\MIS_DATOS\A1_EDUCACION\B1_UNIVERSIDAD\C3_UNED\D2_CUATRIMESTRE_2\E5_SE_SISTE
+                            MASEMPOTRADOS\PEC4\VICTORFAGUNDEZPOYO\PRACTICASENSAMBLADOR\P3A4.ASM)
